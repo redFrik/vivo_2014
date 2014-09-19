@@ -65,6 +65,67 @@ s.makeWindow  //record, cpu status and global volume
 
 
 ////////////////////////////////////////////////////////////////////
+//--TWEET #1
+////////////////////////////////////////////////////////////////////
+
+play{SinOsc.ar([400,404],0,0.1)}// #SuperCollider
+
+play{SinOsc.ar([400,404]+SinOsc.ar([0.5,0.6],0,50),0,0.1)}// #SuperCollider
+
+play{SinOsc.ar([4000,4004]+SinOsc.ar([10.5,10.6],0,1500),0,0.1)}// #SuperCollider
+
+play{SinOsc.ar([4000,4004]+SinOsc.ar([10.5,10.6],0,1500)+SinOsc.ar(0.1,0,5000,1000),0,0.1)}// #SuperCollider
+
+play{SinOsc.ar([4000,4004]+SinOsc.ar([100.5,10.6],0,1500)+SinOsc.ar(0.1,0,5000,1000),0,SinOsc.ar(2)+SinOsc.ar(3))}// #SuperCollider
+
+"play{SinOsc.ar([4000,4004]+SinOsc.ar([100.5,10.6],0,1500)+SinOsc.ar(0.1,0,5000,1000),0,SinOsc.ar(2)+SinOsc.ar(3))}// #SuperCollider".size
+
+
+//optimizing:
+a=SinOsc;play{a.ar([4000,4004]+a.ar([100.5,10.6],0,1500)+a.ar(0.1,0,5000,1000),0,a.ar(2)+a.ar(3))}// #SuperCollider
+
+
+//easy to replace main oscillator:
+a=LFSaw;play{a.ar([4000,4004]+a.ar([100.5,10.6],0,1500)+a.ar(0.1,0,5000,1000),0,a.ar(2)+a.ar(3))}// #SuperCollider
+
+LFTri
+LFPar
+LFCub
+Blip
+LFPulse
+VarSaw
+
+a=Blip;play{a.ar([4000,4004]+a.ar([100.5,10.6],0,1500)+a.ar(0.1,0,5000,1000),0,a.ar(2)+a.ar(3))}// #SuperCollider
+
+a=LFPulse;play{a.ar([4000,4004]+a.ar([100.5,10.6],0,1500)+a.ar(0.1,0,5000,1000),0,a.ar(2)+a.ar(3))}// #SuperCollider
+
+
+//two simple effects you can add.  tanh, and CombN:
+a=SinOsc;play{a.ar([4000,4004]+a.ar([100.5,10.6],0,1500)+a.ar(0.1,0,5000,1000),0,a.ar(2)+a.ar(3)*5).tanh}// #SuperCollider
+
+{SinOsc.ar(400, 0, SinOsc.ar(0.1)*5).tanh}.play
+
+a=Blip;play{CombN.ar(a.ar([4000,4004]+a.ar([100.5,10.6],0,1500)+a.ar(0.1,0,5000,1000),0,a.ar(2)+a.ar(3)))}// #SuperCollider
+
+
+//math and bitwise operators:
+a=SinOsc;play{a.ar([4000,4004]&a.ar([100.5,10.6],0,1500)*a.ar(0.1,0,5000,1000),0,a.ar(2)*a.ar(3))}// #SuperCollider
+
+>>
+<<
+*
+/
+%
+|
+&
+>
+<
+
+
+
+
+
+////////////////////////////////////////////////////////////////////
 //--TEMPLATES
 ////////////////////////////////////////////////////////////////////
 
@@ -110,6 +171,36 @@ play{CombN.ar(SinOsc.ar(Saw.ar(3,64,99),Saw.ar([3,4],Saw.ar(1,32,128),Duty.ar(1,
 
 
 ////////////////////////////////////////////////////////////////////
+//--TWEET #2
+////////////////////////////////////////////////////////////////////
+
+play{SinOsc.ar(0,SinOsc.ar([400,404])*2pi)}
+play{SinOsc.ar(0,SinOsc.ar([400,404])*3)}
+play{SinOsc.ar(0,SinOsc.ar([400,404])*15)}
+
+play{SinOsc.ar(0,SinOsc.ar([400,404])*SinOsc.ar(0.1)*2pi)}
+
+play{SinOsc.ar(0,SinOsc.ar([400,404])*SinOsc.ar(SinOsc.ar(0.1))*2pi)}
+
+play{SinOsc.ar(0,SinOsc.ar([400,404])*SinOsc.ar(SinOsc.ar(0.1)*40)*2pi)}
+
+
+//this low one recommended for testing with sub bas:
+play{SinOsc.ar(0,SinOsc.ar([50,51])*SinOsc.ar(SinOsc.ar(0.1)*40)*2pi)}
+
+
+//with main oscillator as a variable:
+a=SinOsc;play{a.ar(0,a.ar([400,404])*a.ar(a.ar(0.1)*40)*2pi)}
+
+a=VarSaw;play{SinOsc.ar(0,a.ar([400,404])*a.ar(a.ar(0.1)*40)*2pi)}
+
+a=Pulse;play{SinOsc.ar(0,a.ar([400,404])*a.ar(CombN.ar(a.ar(0.1))*40)*2pi)}
+
+
+
+
+
+////////////////////////////////////////////////////////////////////
 //--TRICKS
 ////////////////////////////////////////////////////////////////////
 
@@ -119,6 +210,9 @@ play{CombN.ar(SinOsc.ar(Saw.ar(3,64,99),Saw.ar([3,4],Saw.ar(1,32,128),Duty.ar(1,
 1000
 1e3
 
+100000
+1e5
+
 0.001
 1e-3
 
@@ -127,6 +221,9 @@ play{CombN.ar(SinOsc.ar(Saw.ar(3,64,99),Saw.ar([3,4],Saw.ar(1,32,128),Duty.ar(1,
 
 {}.play
 play{}
+
+abs(50)
+50.abs
 
 [60,63,66,69]
 [0,3,6,9]+60
@@ -165,6 +262,30 @@ a=SinOsc;play{a.ar(0,a.ar([400,404]),a.ar([0.1,0.2]))}
 
 
 ////////////////////////////////////////////////////////////////////
+//--MULTI CHANNEL
+////////////////////////////////////////////////////////////////////
+
+play{SinOsc.ar([400,404,500])*0.1}  //note we only hear 2 channels
+
+
+//Splay spreads out 3 channels in the stereo field (2 channels)
+play{Splay.ar(SinOsc.ar([400,404,500])*0.1)}
+
+play{Splay.ar(SinOsc.ar([400,404,500,600,700,800])*0.1)}
+
+
+//.sum will add all channels together
+play{SinOsc.ar([400,404,500]).sum*0.1!2}
+
+
+//.mean will add all channels together and then divide by the number
+play{SinOsc.ar([400,404,500]).mean*0.1!2}
+
+
+
+
+
+////////////////////////////////////////////////////////////////////
 //--STEP BY STEP
 ////////////////////////////////////////////////////////////////////
 
@@ -173,6 +294,7 @@ play{SinOsc.ar(midicps([60,63]))}  //a very simple two channel synth
 play{Splay.ar(SinOsc.ar(midicps([60,63,66,69])))}  //Splay spread out channels in stereo
 
 //adding note changes (LFPulse varies between 0 and 1)
+//.kr means control rate
 play{Splay.ar(SinOsc.ar(midicps([60,63,66,69]+LFPulse.kr(1/[3,4,5,6]))))}
 
 //adding rhythm (LFSaw ramps -1 to 1. the clicks happen when jumping from 1 back to -1)
@@ -201,7 +323,7 @@ a=LFPulse;play{Splay.ar(SinOsc.ar(midicps((0,3..9)+60+a.kr(1/b=(3..6)))*a.kr(2/b
 //Pbind, fork and Routine
 //.reduce
 //recursion
-//fm and pm
+//fm and pm  //we mainly used only these in this workshop!
 
 
 
@@ -257,8 +379,39 @@ Ndef(\mytweet123, {
 });
 )
 
-Ndef(\mytweet123).gui  //click play and change the slider to fade.
+Ndef(\mytweet123).play
+Ndef(\mytweet123).gui  //you can play/stop and change the volume
 Ndef(\mytweet123).clear
+
+
+//another example
+(
+Ndef(\mytweetABC, {	CombN.ar(SinOsc.ar(Saw.ar(3,64,99)+50,Saw.ar([3,4],Saw.ar(1,32,128),Duty.ar(1,0,flop(Dseq([0,8,1,5])*[1,4,8]))))/9,1,1/6)
+});
+)
+Ndef(\mytweetABC).play
+Ndef(\mytweetABC).stop(5)  //fade out and stop over 5 seconds
+
+
+
+
+//fadeTime
+Ndef(\test3, {SinOsc.ar([400,404]+SinOsc.ar(50,0,50))*0.5})
+Ndef(\test3).play
+Ndef(\test3).fadeTime= 8  //set 8 seconds crossfade time
+
+Ndef(\test3, {SinOsc.ar([505,808]+SinOsc.ar(50,0,80))*0.5})
+
+
+//so with Ndef you can change the code while it is running
+//and with a fadeTime set you the changes will be smooth.
+Ndef(\test3, {LFTri.ar([505,808]+SinOsc.ar(50,0,80))*0.5})
+
+Ndef(\test3, {SinOsc.ar(1)%LFTri.ar([505,808]+SinOsc.ar(50,0,80))*0.5})
+Ndef(\test3, {SinOsc.ar(1)%LFTri.ar([505,808]+SinOsc.ar(150,0,180))*0.5})
+Ndef(\test3, {SinOsc.ar(1)%LFTri.ar([200,202]+SinOsc.ar(150,0,180))*0.5})
+Ndef(\test3).stop(10)
+
 
 
 
