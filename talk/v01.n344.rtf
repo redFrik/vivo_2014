@@ -1,0 +1,40 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+\cocoascreenfonts1{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+\deftab720
+\pard\pardeftab720
+
+\f0\fs26 \cf0 ------------------------------\
+\
+Date: Thu, 16 Aug 2001 21:12:27 +0200\
+From: Fredrik Olofsson <---@---.--->\
+Subject: noisy instr.\
+\
+hello\
+\
+this works... (sc 2.2.11)\
+\
+(\{\
+	RHPF.ar(\
+		BrownNoise.ar([1,1]),\
+		LFSaw.ar(1,0.99,2),\
+		0.24).clip2(0.5)\
+\}.scope\
+)\
+\
+\
+this doesn't...\
+\
+(\{\
+	RHPF.ar(\
+		BrownNoise.ar([1,1]),\
+		LFSaw.ar(1,0.99,1),		//note add difference\
+		0.24).clip2(0.5)\
+\}.scope\
+)\
+\
+how come the latter example runs fine for about 40 seconds and then \
+both channels 'get stuck' at +1, one after the other?  i've had the \
+former playing for at least 9 min.\
+\
+confused/fredrik}
